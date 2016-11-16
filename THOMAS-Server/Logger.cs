@@ -10,9 +10,13 @@ namespace THOMASServer
 {
     public static class Logger
     {
+        public static bool DebugEnabled { get; set; } = true;
+
         public static void Debug(string message, [CallerFilePath] string filePath = null, [CallerMemberName]string memberName = null, [CallerLineNumber] int lineNumber = 0)
         {
-            // TODO: Debug-Modus per Config deaktivieren
+            if (!DebugEnabled)
+                return;
+
             WriteLog(ConsoleColor.DarkGreen, "DEBUG", message, filePath, memberName, lineNumber);
         }
 

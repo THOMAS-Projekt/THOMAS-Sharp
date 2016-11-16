@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<thomas>
+  <application>
+    <debug>true</debug>
+  </application>
+  <modules>
+    <module id="CameraServoActor">
+    </module>
+    <module id="ArduinoDriver">
+      <config>
+        <port>/dev/ttyUSB0</port>
+        <baudrate>115200</baudrate>
+      </config>
+    </module>
+  </modules>
+</thomas>

@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="Actors\CameraServoActor.cs" />
     <Compile Include="Actors\IActor.cs" />
+    <Compile Include="Actors\LCDPanel.cs" />
+    <Compile Include="ApplicationConfig.cs" />
+    <Compile Include="Attributes\ConfigAttribute.cs" />
     <Compile Include="Attributes\OptionalAttribute.cs" />
     <Compile Include="Attributes\RequirementAttribute.cs" />
     <Compile Include="Controllers\IController.cs" />
@@ -72,7 +75,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

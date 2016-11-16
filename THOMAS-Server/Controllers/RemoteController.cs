@@ -9,7 +9,7 @@ using THOMASServer.Utils;
 
 namespace THOMASServer.Controllers
 {
-    [Optional(typeof(CameraServoActor))]
+    [Requirement(typeof(CameraServoActor), typeof(LCDPanel))]
     public class RemoteController : IController
     {
         public bool IsEnabled => _isEnabled;
@@ -18,7 +18,7 @@ namespace THOMASServer.Controllers
 
         private bool _isEnabled = false;
 
-        public RemoteController(CameraServoActor cameraServoActor)
+        public RemoteController(CameraServoActor cameraServoActor, LCDPanel lcdPanel)
         {
 
         }

@@ -9,11 +9,18 @@ namespace THOMASServer
 {
     internal static class Program
     {
+        private const string FileName = "config.xml";
+
         private static void Main(string[] args)
-        {
+        { 
             Logger.Info("Starten...");
 
-            new ModuleManager().Initialize();
+            ApplicationConfig applicationConfig = new ApplicationConfig(FileName);
+
+            Logger.DebugEnabled = applicationConfig.Debug;
+
+            Logger.Debug("HI!");
+            new ModuleManager(applicationConfig).Initialize();
 
             Logger.Info("Bereit.");
 
