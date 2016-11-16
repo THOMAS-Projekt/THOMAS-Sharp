@@ -19,7 +19,6 @@ namespace THOMASServer
 
             Logger.DebugEnabled = applicationConfig.Debug;
 
-            Logger.Debug("HI!");
             new ModuleManager(applicationConfig).Initialize();
 
             Logger.Info("Bereit.");

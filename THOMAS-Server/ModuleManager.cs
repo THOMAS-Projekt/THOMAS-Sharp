@@ -32,7 +32,7 @@ namespace THOMASServer
         public void Initialize()
         {
             Instantiate(typeof(RemoteController));
-            //Instantiate(typeof(SLAMController));
+            Instantiate(typeof(SLAMController));
         }
 
         private IThomasElement Instantiate(Type elementType)
