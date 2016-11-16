@@ -7,7 +7,7 @@
     <ProjectGuid>{825C8BA1-27E2-432D-8DEA-5C738CC78915}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>THOMAS_Server</RootNamespace>
+    <RootNamespace>THOMASServer</RootNamespace>
     <AssemblyName>THOMAS-Server</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>THOMAS_Server.Program</StartupObject>
+    <StartupObject>THOMASServer.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,12 +46,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\CameraServoActor.cs" />
+    <Compile Include="Actors\IActor.cs" />
+    <Compile Include="Attributes\OptionalAttribute.cs" />
+    <Compile Include="Attributes\RequirementAttribute.cs" />
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\RemoteController.cs" />
+    <Compile Include="Controllers\SLAMController.cs" />
+    <Compile Include="Drivers\ArduinoDriver.cs" />
+    <Compile Include="Drivers\IDriver.cs" />
+    <Compile Include="ModuleManager.cs" />
+    <Compile Include="Pools\ControllerPool.cs" />
+    <Compile Include="Pools\Pool.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sensors\ISensor.cs" />
+    <Compile Include="Utils\IThomasElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
