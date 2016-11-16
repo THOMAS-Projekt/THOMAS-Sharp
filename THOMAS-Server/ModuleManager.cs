@@ -27,7 +27,7 @@ namespace THOMASServer
         }
 
         private IThomasElement Instantiate(Type elementType)
-        {
+        {            
             // Ist bereits eine Instanz vorhanden?
             if (_drivers.Select(e => e.GetType() == elementType).Count() >= 1) return _drivers.First(e => e.GetType() == elementType);
             else if (_sensors.Select(e => e.GetType() == elementType).Count() >= 1) return _sensors.First(e => e.GetType() == elementType);

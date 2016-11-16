@@ -11,11 +11,14 @@ namespace THOMASServer
     {
         private static void Main(string[] args)
         {
+            Logger.Info("Starten...");
+
             new ModuleManager().Initialize();
 
-            Console.WriteLine("Ich lebe!");
+            Logger.Info("Bereit.");
 
-            Console.ReadKey();
+            // TODO: Minimale konsole
+            Console.ReadLine();
         }
     }
 }
