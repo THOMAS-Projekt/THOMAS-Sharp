@@ -6,7 +6,7 @@ __Optimiert für:__ .Net-Framework 4.5.2 (oder älter)
 
 ## Entwicklung auf Windows
 Für die Entwicklung auf Windows empfiehlt sich die Verwendung der Visual Studio IDE, mit der sich die `THOMAS-Sharp.sln`-Datei im Projekt-Hauptverzeichnis öffnen lässt.
-Damit anschließend ein Kompilieren möglich ist, sollte über _Extras_ -> _NuGet-Paketmanager_ -> _NuGet-Pakete für Projektmappe verwalten_ der Paket-Manager geöffnet werden und in der auftauchenden Meldung am oberen Fensterrand die Paketwiderherstellung gestartet werden. Alles weitere erfolgt automatisch und anschließend sollte sich das Projekt kompilieren lassen.
+Damit anschließend ein Kompilieren möglich ist, sollte über _Extras_ -> _NuGet-Paketmanager_ -> _NuGet-Pakete für Projektmappe verwalten_ der Paket-Manager geöffnet werden und in der auftauchenden Meldung am oberen Fensterrand die Paketwiederherstellung gestartet werden. Alles weitere erfolgt automatisch und anschließend sollte sich das Projekt kompilieren lassen.
 
 ## Ausführen auf Ubuntu
 ### Mono installieren
