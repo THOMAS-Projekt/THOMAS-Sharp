@@ -103,7 +103,7 @@ namespace THOMASServer
             }
 
             // Instanz zu einem der Pools hinzufügen
-            if (!_drivers.AddIfMAtches(instance) && !_sensors.AddIfMAtches(instance) && !_actors.AddIfMAtches(instance) && !_controllers.AddIfMAtches(instance))
+            if (!_drivers.AddIfMatches(instance) && !_sensors.AddIfMatches(instance) && !_actors.AddIfMatches(instance) && !_controllers.AddIfMatches(instance))
                 throw new ArgumentException("Ungültiger Element-Typ", nameof(elementType));
 
             return instance;
