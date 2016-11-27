@@ -9,6 +9,6 @@ namespace THOMASServer.Actors
 {
     public interface IActor : IThomasElement
     {
-        
+
     }
 }

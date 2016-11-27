@@ -38,23 +38,23 @@ namespace THOMASServer
         private IThomasElement Instantiate(Type elementType)
         {
             // Ist bereits eine Instanz vorhanden?
-            if(_drivers.ContainsInstance(elementType)) return _drivers.GetInstance(elementType);
-            if(_sensors.ContainsInstance(elementType)) return _sensors.GetInstance(elementType);
-            if(_actors.ContainsInstance(elementType)) return _actors.GetInstance(elementType);
-            if(_controllers.ContainsInstance(elementType)) return _controllers.GetInstance(elementType);
+            if (_drivers.ContainsInstance(elementType)) return _drivers.GetInstance(elementType);
+            if (_sensors.ContainsInstance(elementType)) return _sensors.GetInstance(elementType);
+            if (_actors.ContainsInstance(elementType)) return _actors.GetInstance(elementType);
+            if (_controllers.ContainsInstance(elementType)) return _controllers.GetInstance(elementType);
 
             // Parameter, die der neuen Instanz übergeben werden
             List<object> instanceParameters = new List<object>();
 
             // Erforderliche Abhängigkeiten. Sollte eine nicht verfügbar sein, ist dieses Element auch nicht verfügbar.
             RequirementAttribute requirementAttribute = (RequirementAttribute)elementType.GetCustomAttributes(typeof(RequirementAttribute), true).FirstOrDefault();
-            if(requirementAttribute != null)
+            if (requirementAttribute != null)
             {
-                foreach(Type subElementType in requirementAttribute.RequiredElements)
+                foreach (Type subElementType in requirementAttribute.RequiredElements)
                 {
                     IThomasElement requiredInstance = Instantiate(subElementType);
 
-                    if(requiredInstance == null)
+                    if (requiredInstance == null)
                     {
                         Logger.Warning($"Abhängigkeit {subElementType.Name} von {elementType.Name} konnte nicht erfüllt werden.");
                         return null;
@@ -66,13 +66,13 @@ namespace THOMASServer
 
             // Optionale Abhängigkeiten. Falls verfügbar, werden diese Komponenten dem aktuellen Element mit übergeben.
             OptionalAttribute optionalAttribute = (OptionalAttribute)elementType.GetCustomAttributes(typeof(OptionalAttribute), true).FirstOrDefault();
-            if(optionalAttribute != null)
+            if (optionalAttribute != null)
             {
-                foreach(Type subElementType in optionalAttribute.OptionalElements)
+                foreach (Type subElementType in optionalAttribute.OptionalElements)
                 {
                     IThomasElement requiredInstance = Instantiate(subElementType);
 
-                    if(requiredInstance == null)
+                    if (requiredInstance == null)
                         Logger.Warning($"Optionale Abhängigkeit {subElementType.Name} von {elementType.Name} konnte nicht erfüllt werden.");
 
                     instanceParameters.Add(requiredInstance);
@@ -81,19 +81,19 @@ namespace THOMASServer
 
             // Falls ein Konfigurationselement angefordert wird, gib dieses, falls vorhanden zurück. Sollte es angefordert werden, aber nicht vorhanden sein, gib Null zurück.
             ConfigAttribute configAttribute = (ConfigAttribute)elementType.GetCustomAttributes(typeof(ConfigAttribute), true).FirstOrDefault();
-            if(configAttribute != null)
+            if (configAttribute != null)
                 instanceParameters.Add(_applicationConfig.ModuleConfigs.ContainsKey(configAttribute.Id) ? _applicationConfig.ModuleConfigs[configAttribute.Id] : null);
 
             // Instanz erstellen
             IThomasElement instance = (IThomasElement)(instanceParameters.Count > 0 ? Activator.CreateInstance(elementType, instanceParameters.ToArray()) : Activator.CreateInstance(elementType));
 
             // Sonderbehandlung von Treibern, da diese aufgrund von fehlender Hardware nicht initialisiert werden könnten.
-            if(typeof(IDriver).IsAssignableFrom(elementType))
+            if (typeof(IDriver).IsAssignableFrom(elementType))
             {
-                if(_failedDrivers.Contains(elementType))
+                if (_failedDrivers.Contains(elementType))
                     return null;
 
-                if(!((IDriver)instance).Initialize())
+                if (!((IDriver)instance).Initialize())
                 {
                     Logger.Warning($"Treiber {((IDriver)instance).Name} konnte nicht initalisiert werden.");
                     _failedDrivers.Add(elementType);
@@ -103,9 +103,9 @@ namespace THOMASServer
             }
 
             // Instanz zu einem der Pools hinzufügen
-            if(!_drivers.AddIfMAtches(instance) && !_sensors.AddIfMAtches(instance) && !_actors.AddIfMAtches(instance) && !_controllers.AddIfMAtches(instance))
+            if (!_drivers.AddIfMAtches(instance) && !_sensors.AddIfMAtches(instance) && !_actors.AddIfMAtches(instance) && !_controllers.AddIfMAtches(instance))
                 throw new ArgumentException("Ungültiger Element-Typ", nameof(elementType));
-            
+
             return instance;
         }
     }

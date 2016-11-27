@@ -50,7 +50,7 @@ namespace THOMASServer.Pools
         /// <returns>Gibt an, ob die Instanz zum Pool hinzugefügt wurde.</returns>
         public bool AddIfMAtches(IThomasElement instance)
         {
-            if(!(instance is TE))
+            if (!(instance is TE))
                 return false;
 
             Add((TE)instance);

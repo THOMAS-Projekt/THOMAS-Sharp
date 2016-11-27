@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace THOMASServer.Attributes
 {
-    public class ConfigAttribute : Attribute 
+    public class ConfigAttribute : Attribute
     {
         public string Id { get; private set; }
 
