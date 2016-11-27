@@ -9,7 +9,7 @@ namespace THOMASServer.Controllers
 {
     public interface IController : IThomasElement
     {
-        bool IsEnabled { get;}
+        bool IsEnabled { get; }
 
         void Start();
         void Stop();

@@ -15,14 +15,14 @@ namespace THOMASServer
 {
     public class ModuleManager
     {
-        private Pool<IDriver> _drivers = new Pool<IDriver>();
-        private Pool<ISensor> _sensors = new Pool<ISensor>();
-        private Pool<IActor> _actors = new Pool<IActor>();
-        private Pool<IController> _controllers = new Pool<IController>();
+        private readonly Pool<IDriver> _drivers = new Pool<IDriver>();
+        private readonly Pool<ISensor> _sensors = new Pool<ISensor>();
+        private readonly Pool<IActor> _actors = new Pool<IActor>();
+        private readonly Pool<IController> _controllers = new Pool<IController>();
 
-        private List<Type> _failedDrivers = new List<Type>();
+        private readonly List<Type> _failedDrivers = new List<Type>();
 
-        private ApplicationConfig _applicationConfig;
+        private readonly ApplicationConfig _applicationConfig;
 
         public ModuleManager(ApplicationConfig applicationConfig)
         {
@@ -38,15 +38,15 @@ namespace THOMASServer
         private IThomasElement Instantiate(Type elementType)
         {
             // Ist bereits eine Instanz vorhanden?
-           
-            if (_drivers.Any(e => e.GetType () == elementType)) return _drivers.First(e => e.GetType() == elementType);
-            else if (_sensors.Any(e => e.GetType() == elementType)) return _sensors.First(e => e.GetType() == elementType);
-            else if (_actors.Any(e => e.GetType() == elementType)) return _actors.First(e => e.GetType() == elementType);
-            else if (_controllers.Any(e => e.GetType() == elementType)) return _controllers.First(e => e.GetType() == elementType);
+            if (_drivers.ContainsInstance(elementType)) return _drivers.GetInstance(elementType);
+            if (_sensors.ContainsInstance(elementType)) return _sensors.GetInstance(elementType);
+            if (_actors.ContainsInstance(elementType)) return _actors.GetInstance(elementType);
+            if (_controllers.ContainsInstance(elementType)) return _controllers.GetInstance(elementType);
 
             // Parameter, die der neuen Instanz übergeben werden
             List<object> instanceParameters = new List<object>();
 
+            // Erforderliche Abhängigkeiten. Sollte eine nicht verfügbar sein, ist dieses Element auch nicht verfügbar.
             RequirementAttribute requirementAttribute = (RequirementAttribute)elementType.GetCustomAttributes(typeof(RequirementAttribute), true).FirstOrDefault();
             if (requirementAttribute != null)
             {
@@ -64,6 +64,7 @@ namespace THOMASServer
                 }
             }
 
+            // Optionale Abhängigkeiten. Falls verfügbar, werden diese Komponenten dem aktuellen Element mit übergeben.
             OptionalAttribute optionalAttribute = (OptionalAttribute)elementType.GetCustomAttributes(typeof(OptionalAttribute), true).FirstOrDefault();
             if (optionalAttribute != null)
             {
@@ -78,23 +79,15 @@ namespace THOMASServer
                 }
             }
 
+            // Falls ein Konfigurationselement angefordert wird, gib dieses, falls vorhanden zurück. Sollte es angefordert werden, aber nicht vorhanden sein, gib Null zurück.
             ConfigAttribute configAttribute = (ConfigAttribute)elementType.GetCustomAttributes(typeof(ConfigAttribute), true).FirstOrDefault();
-            if(configAttribute != null)
-            {
-                if(_applicationConfig.ModuleConfigs.ContainsKey(configAttribute.Id))
-                {
-                    instanceParameters.Add(_applicationConfig.ModuleConfigs[configAttribute.Id]);
-                }
-            }
+            if (configAttribute != null)
+                instanceParameters.Add(_applicationConfig.ModuleConfigs.ContainsKey(configAttribute.Id) ? _applicationConfig.ModuleConfigs[configAttribute.Id] : null);
 
             // Instanz erstellen
-            object instance;
+            IThomasElement instance = (IThomasElement)(instanceParameters.Count > 0 ? Activator.CreateInstance(elementType, instanceParameters.ToArray()) : Activator.CreateInstance(elementType));
 
-            if (instanceParameters.Count > 0)
-               instance = Activator.CreateInstance(elementType, instanceParameters.ToArray());
-            else
-                instance = Activator.CreateInstance(elementType);
-
+            // Sonderbehandlung von Treibern, da diese aufgrund von fehlender Hardware nicht initialisiert werden könnten.
             if (typeof(IDriver).IsAssignableFrom(elementType))
             {
                 if (_failedDrivers.Contains(elementType))
@@ -102,7 +95,7 @@ namespace THOMASServer
 
                 if (!((IDriver)instance).Initialize())
                 {
-                    Logger.Warning($"Treiber {((IDriver) instance).Name} konnte nicht initalisiert werden.");
+                    Logger.Warning($"Treiber {((IDriver)instance).Name} konnte nicht initalisiert werden.");
                     _failedDrivers.Add(elementType);
 
                     return null;
@@ -110,13 +103,10 @@ namespace THOMASServer
             }
 
             // Instanz zu einem der Pools hinzufügen
-            if (instance is IDriver) _drivers.Add((IDriver)instance);
-            else if (instance is ISensor) _sensors.Add((ISensor)instance);
-            else if (instance is IActor) _actors.Add((IActor)instance);
-            else if (instance is IController) _controllers.Add((IController)instance);
-            else throw new ArgumentException("Ungültiger Element-Typ", nameof(elementType));
+            if (!_drivers.AddIfMatches(instance) && !_sensors.AddIfMatches(instance) && !_actors.AddIfMatches(instance) && !_controllers.AddIfMatches(instance))
+                throw new ArgumentException("Ungültiger Element-Typ", nameof(elementType));
 
-            return (IThomasElement)instance;
+            return instance;
         }
     }
 }

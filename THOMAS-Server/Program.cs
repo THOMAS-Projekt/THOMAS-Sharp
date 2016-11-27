@@ -12,7 +12,7 @@ namespace THOMASServer
         private const string FileName = "config.xml";
 
         private static void Main(string[] args)
-        { 
+        {
             Logger.Info("Starten...");
 
             ApplicationConfig applicationConfig = new ApplicationConfig(FileName);

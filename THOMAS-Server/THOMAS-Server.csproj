@@ -64,7 +64,6 @@
     <Compile Include="Drivers\IDriver.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ModuleManager.cs" />
-    <Compile Include="Pools\ControllerPool.cs" />
     <Compile Include="Pools\Pool.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
