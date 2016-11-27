@@ -10,15 +10,15 @@ namespace THOMASServer.Pools
     /// <summary>
     /// Definiert einen Pool für Programmkomponenten.
     /// </summary>
-    /// <typeparam name="E">Interfacetyp der Komponente.</typeparam>
-    public class Pool<E> : List<E> where E : IThomasElement
+    /// <typeparam name="TE">Interfacetyp der Komponente.</typeparam>
+    public class Pool<TE> : List<TE> where TE : IThomasElement
     {
         /// <summary>
         /// Gibt, falls vorhanden, die Instanz der angefragten Komponente zurück.
         /// </summary>
         /// <typeparam name="T">Typ der gesuchten Instanz.</typeparam>
         /// <returns>Die gesuchte Instanz oder Null.</returns>
-        public T GetInstance<T>() where T : E
+        public T GetInstance<T>() where T : TE
         {
             return (T)this.FirstOrDefault(e => e is T);
         }
@@ -50,13 +50,12 @@ namespace THOMASServer.Pools
         /// <returns>Gibt an, ob die Instanz zum Pool hinzugefügt wurde.</returns>
         public bool AddIfMAtches(IThomasElement instance)
         {
-            if(instance is E)
-            {
-                Add((E)instance);
-                return true;
-            }
+            if(!(instance is TE))
+                return false;
 
-            return false;
+            Add((TE)instance);
+
+            return true;
         }
     }
 }

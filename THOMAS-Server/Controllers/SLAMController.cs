@@ -8,21 +8,19 @@ namespace THOMASServer.Controllers
 {
     class SLAMController : IController
     {
-        public bool IsEnabled => _isEnabled;
+        public bool IsEnabled { get; private set; } = false;
 
         public string Name => "SLAM";
 
-        private bool _isEnabled = false;
-
         public void Start()
         {
-            _isEnabled = true;
+            IsEnabled = true;
             throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            _isEnabled = false;
+            IsEnabled = false;
             throw new NotImplementedException();
         }
     }

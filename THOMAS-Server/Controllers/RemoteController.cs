@@ -12,11 +12,9 @@ namespace THOMASServer.Controllers
     [Requirement(typeof(CameraServoActor), typeof(LCDPanel))]
     public class RemoteController : IController
     {
-        public bool IsEnabled => _isEnabled;
+        public bool IsEnabled { get; private set; } = false;
 
         public string Name => "Fernsteuerung";
-
-        private bool _isEnabled = false;
 
         public RemoteController(CameraServoActor cameraServoActor, LCDPanel lcdPanel)
         {
@@ -25,13 +23,13 @@ namespace THOMASServer.Controllers
 
         public void Start()
         {
-            _isEnabled = true;
+            IsEnabled = true;
             throw new NotImplementedException();
         }
 
         public void Stop()
         {
-            _isEnabled = false;
+            IsEnabled = false;
             throw new NotImplementedException();
         }
     }

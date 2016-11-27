@@ -15,14 +15,14 @@ namespace THOMASServer
 {
     public class ModuleManager
     {
-        private Pool<IDriver> _drivers = new Pool<IDriver>();
-        private Pool<ISensor> _sensors = new Pool<ISensor>();
-        private Pool<IActor> _actors = new Pool<IActor>();
-        private Pool<IController> _controllers = new Pool<IController>();
+        private readonly Pool<IDriver> _drivers = new Pool<IDriver>();
+        private readonly Pool<ISensor> _sensors = new Pool<ISensor>();
+        private readonly Pool<IActor> _actors = new Pool<IActor>();
+        private readonly Pool<IController> _controllers = new Pool<IController>();
 
-        private List<Type> _failedDrivers = new List<Type>();
+        private readonly List<Type> _failedDrivers = new List<Type>();
 
-        private ApplicationConfig _applicationConfig;
+        private readonly ApplicationConfig _applicationConfig;
 
         public ModuleManager(ApplicationConfig applicationConfig)
         {
