@@ -1,16 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<thomas>
-  <application>
-    <debug>true</debug>
-  </application>
-  <modules>
-    <module id="CameraServoActor">
-    </module>
-    <module id="ArduinoDriver">
-      <config>
-        <port>/dev/ttyUSB0</port>
-        <baudrate>115200</baudrate>
-      </config>
-    </module>
-  </modules>
-</thomas>
+<Thomas>
+  <Application>
+    <Debug>true</Debug>
+  </Application>
+  <Modules>
+    <Module id="ArduinoSensorsDriver">
+      <Config>
+        <ArduinoId>0</ArduinoId>
+        <Baudrate>115200</Baudrate>
+      </Config>
+    </Module>
+    <Module id="ArduinoLidarDriver">
+      <Config>
+        <ArduinoId>1</ArduinoId>
+        <Baudrate>115200</Baudrate>
+      </Config>
+    </Module>
+  </Modules>
+</Thomas>

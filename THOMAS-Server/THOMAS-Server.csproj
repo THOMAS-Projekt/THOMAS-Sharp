@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Actors\CameraServoActor.cs" />
     <Compile Include="Actors\IActor.cs" />
-    <Compile Include="Actors\LCDPanel.cs" />
+    <Compile Include="Actors\LidarActor.cs" />
     <Compile Include="ApplicationConfig.cs" />
     <Compile Include="Attributes\ConfigAttribute.cs" />
     <Compile Include="Attributes\OptionalAttribute.cs" />
@@ -60,7 +60,10 @@
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\RemoteController.cs" />
     <Compile Include="Controllers\SLAMController.cs" />
-    <Compile Include="Drivers\ArduinoDriver.cs" />
+    <Compile Include="Drivers\ArduinoLidarDriver.cs" />
+    <Compile Include="Drivers\ArduinoSensorsDriver.cs" />
+    <Compile Include="Drivers\Base\ArduinoBase.cs" />
+    <Compile Include="Drivers\Base\PackageReceivedEventArgs.cs" />
     <Compile Include="Drivers\IDriver.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ModuleManager.cs" />

@@ -3,14 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using THOMASServer.Actors;
+using THOMASServer.Attributes;
 
 namespace THOMASServer.Controllers
 {
-    class SLAMController : IController
+    [Requirement(typeof(LidarActor))]
+    public class SLAMController : IController
     {
         public bool IsEnabled { get; private set; } = false;
 
         public string Name => "SLAM";
+
+        private readonly LidarActor _lidarActor;
+
+        public SLAMController(LidarActor lidarActor)
+        {
+            _lidarActor = lidarActor;
+
+            lidarActor.StartScan(2);
+        }
 
         public void Start()
         {

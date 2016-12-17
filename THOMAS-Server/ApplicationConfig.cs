@@ -16,21 +16,21 @@ namespace THOMASServer
 
         public ApplicationConfig(string filename)
         {
-            XElement thomasConfig = XDocument.Load(filename).Element("thomas");
-            XElement applicationConfig = thomasConfig.Element("application");
-            XElement modulesConfig = thomasConfig.Element("modules");
+            XElement thomasConfig = XDocument.Load(filename).Element("Thomas");
+            XElement applicationConfig = thomasConfig.Element("Application");
+            XElement modulesConfig = thomasConfig.Element("Modules");
 
-            Debug = bool.Parse(applicationConfig.Element("debug").Value);
+            Debug = bool.Parse(applicationConfig.Element("Debug").Value);
 
-            foreach (XElement moduleConfig in modulesConfig.Elements("module"))
+            foreach (XElement moduleConfig in modulesConfig.Elements("Module"))
             {
                 string id = moduleConfig.Attribute("id").Value;
-                XElement config = moduleConfig.Element("config");
+                XElement config = moduleConfig.Element("Config");
 
                 if (config == null)
                     continue;
 
-                ModuleConfigs[id] = moduleConfig.Element("config");
+                ModuleConfigs[id] = config;
             }
         }
     }

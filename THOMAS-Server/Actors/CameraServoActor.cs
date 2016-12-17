@@ -10,12 +10,12 @@ using THOMASServer.Utils;
 
 namespace THOMASServer.Actors
 {
-    [Requirement(typeof(ArduinoDriver))]
+    [Requirement(typeof(ArduinoSensorsDriver))]
     public class CameraServoActor : IActor
     {
         public string Name => "Kamera-Servo";
 
-        public CameraServoActor(ArduinoDriver arduinoDriver)
+        public CameraServoActor(ArduinoSensorsDriver arduinoDriver)
         {
             // TODO
         }
