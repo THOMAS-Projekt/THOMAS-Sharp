@@ -21,7 +21,7 @@ namespace THOMASServer.Controllers
         {
             _lidarActor = lidarActor;
 
-            lidarActor.StartScan(2);
+            lidarActor.SaveScansToFile("scans.csv", 1, 10);
         }
 
         public void Start()

@@ -65,6 +65,7 @@
     <Compile Include="Drivers\Base\ArduinoBase.cs" />
     <Compile Include="Drivers\Base\PackageReceivedEventArgs.cs" />
     <Compile Include="Drivers\IDriver.cs" />
+    <Compile Include="Drivers\ScanValueReceivedEventArgs.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ModuleManager.cs" />
     <Compile Include="Pools\Pool.cs" />

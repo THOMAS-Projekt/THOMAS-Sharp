@@ -14,6 +14,8 @@ namespace THOMASServer.Drivers
     {
         public string Name => "Arduino-Lidar";
 
+        public event EventHandler<ScanValueReceivedEventArgs> ScanValueReceived;
+
         private int _arduinoId;
         private int _baudrate;
 
@@ -30,7 +32,10 @@ namespace THOMASServer.Drivers
             if (!connected)
                 return false;
 
-            Setup();
+            if (!Setup())
+                return false;
+
+            PackageReceived += ArduinoLidarDriver_PackageReceived;
 
             return true;
         }
@@ -57,6 +62,26 @@ namespace THOMASServer.Drivers
             Logger.Error($"Stoppen des Lidar-Scans fehlgeschlagen. Rückgabe: {response}");
 
             return false;
+        }
+
+        private void ArduinoLidarDriver_PackageReceived(object sender, PackageReceivedEventArgs e)
+        {
+            switch (e.ResponseCommandByte)
+            {
+                // Messwert aufgenommen
+                case 100:
+                    ProcessScanValue(e.Package);
+
+                    break;
+            }
+        }
+
+        private void ProcessScanValue(byte[] package)
+        {
+            float angle = BitConverter.ToSingle(package,0);
+            int distance = BitConverter.ToInt16(package, 4);
+
+            ScanValueReceived?.Invoke(this, new ScanValueReceivedEventArgs(angle, distance));
         }
     }
 }

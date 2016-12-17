@@ -10,7 +10,7 @@ namespace THOMASServer.Drivers.Base
 {
     public abstract class ArduinoBase
     {
-        public event EventHandler<PackageReceivedEventArgs> PackageReceived;
+        protected event EventHandler<PackageReceivedEventArgs> PackageReceived;
 
         private SerialPort _serialPort;
 
@@ -45,7 +45,7 @@ namespace THOMASServer.Drivers.Base
                 }
                 catch (Exception ex)
                 {
-                    Logger.Warning($"Kein Zugriff auf Port {portName}: {ex.Message}");
+                    Logger.Warning($"Kein Zugriff auf Port {portName}: {ex}");
                 }
             }
 
