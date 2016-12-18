@@ -47,6 +47,9 @@ namespace THOMASServer.Drivers.Base
                 catch (Exception ex)
                 {
                     Logger.Warning($"Kein Zugriff auf Port {portName}: {ex.Message}");
+
+                    if (_serialPort.IsOpen)
+                        _serialPort.Close();
                 }
             }
 
