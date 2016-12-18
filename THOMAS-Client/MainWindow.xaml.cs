@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace THOMAS_Client
+namespace THOMASClient
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml

@@ -7,7 +7,7 @@
     <ProjectGuid>{AA48D8DA-AB52-41C5-9D64-CDA40B9CFA6A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>THOMAS_Client</RootNamespace>
+    <RootNamespace>THOMASClient</RootNamespace>
     <AssemblyName>THOMAS-Client</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
