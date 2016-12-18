@@ -21,7 +21,7 @@ namespace THOMASServer.Drivers.Base
                 if (!portName.Contains("COM") && !portName.Contains("ACM"))
                     continue;
 
-                _serialPort = new SerialPort(portName, baudrate) { DtrEnable = true };
+                _serialPort = new SerialPort(portName, baudrate) { DtrEnable = true, ReadTimeout = 5000 };
 
                 try
                 {
@@ -35,6 +35,7 @@ namespace THOMASServer.Drivers.Base
                     {
                         Logger.Debug("Verbindung zum Arduino hergestellt.");
 
+                        _serialPort.ReadTimeout = SerialPort.InfiniteTimeout;
                         BeginReceive();
 
                         return true;
@@ -45,7 +46,7 @@ namespace THOMASServer.Drivers.Base
                 }
                 catch (Exception ex)
                 {
-                    Logger.Warning($"Kein Zugriff auf Port {portName}: {ex}");
+                    Logger.Warning($"Kein Zugriff auf Port {portName}: {ex.Message}");
                 }
             }
 
@@ -87,20 +88,19 @@ namespace THOMASServer.Drivers.Base
 
             byte[] response = null;
 
-            using (ManualResetEvent responseReceived = new ManualResetEvent(false))
-            {
-                PackageReceived += (sender, e) =>
-                {
-                    // Entspricht das Kommandobyte der Antwort, dem der Anfrage?
-                    if (e.ResponseCommandByte == package[0])
-                    {
-                        response = e.Package;
-                        responseReceived.Set();
-                    }
-                };
+            ManualResetEvent responseReceived = new ManualResetEvent(false);
 
-                responseReceived.WaitOne();
-            }
+            PackageReceived += (sender, e) => {
+                // Entspricht das Kommandobyte der Antwort, dem der Anfrage?
+                if (e.ResponseCommandByte == package[0])
+                {
+                    response = e.Package;
+                    responseReceived.Set();
+                    responseReceived.Dispose();
+                }
+            };
+
+            responseReceived.WaitOne();
 
             if (response.Length != expectedPackageLength)
                 Logger.Warning($"Paketlänge beträgt {response.Length}, aber {expectedPackageLength} erwartet.");
@@ -149,8 +149,7 @@ namespace THOMASServer.Drivers.Base
 
         private void BeginReceive()
         {
-            new Task(() =>
-            {
+            new Task(() => {
                 byte[] package;
 
                 while (true)

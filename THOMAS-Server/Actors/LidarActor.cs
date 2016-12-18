@@ -63,7 +63,7 @@ namespace THOMASServer.Actors
             }
             catch (Exception ex)
             {
-                Logger.Error($"Die Datei {filename} konnte nicht zum Schreiben geöffnet werden: {ex}");
+                Logger.Error($"Die Datei {filename} konnte nicht zum Schreiben geöffnet werden: {ex.Message}");
                 return;
             }
             
