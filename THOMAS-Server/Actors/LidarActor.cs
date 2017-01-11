@@ -20,15 +20,14 @@ namespace THOMASServer.Actors
 
         private readonly ArduinoLidarDriver _arduinoLidarDriver;
 
-        private readonly WebSocketServer _webSocketServer;
-        private readonly List<IWebSocketConnection> _connections;
+        private readonly List<IWebSocketConnection> _connections = new List<IWebSocketConnection>();
 
         public LidarActor(ArduinoLidarDriver arduinoLidarDriver)
         {
             _arduinoLidarDriver = arduinoLidarDriver;
 
-            _webSocketServer = new WebSocketServer("ws://0.0.0.0:8123");
-            _webSocketServer.Start(socket =>
+            WebSocketServer webSocketServer = new WebSocketServer("ws://0.0.0.0:8123");
+            webSocketServer.Start(socket =>
             {
                 socket.OnOpen = () => _connections.Add(socket);
                 socket.OnClose = () => _connections.Remove(socket);
