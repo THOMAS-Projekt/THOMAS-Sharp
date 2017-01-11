@@ -87,13 +87,11 @@ namespace THOMASServer.Drivers.Base
 
         protected byte[] WritePackageWithResponse(byte[] package, byte expectedPackageLength = 0)
         {
-            WritePackage(package);
-
             byte[] response = null;
 
             ManualResetEvent responseReceived = new ManualResetEvent(false);
 
-            PackageReceived += (sender, e) => {
+            EventHandler<PackageReceivedEventArgs> receivingHandler = (sender, e) => {
                 // Entspricht das Kommandobyte der Antwort, dem der Anfrage?
                 if (e.ResponseCommandByte == package[0])
                 {
@@ -103,7 +101,12 @@ namespace THOMASServer.Drivers.Base
                 }
             };
 
+            PackageReceived += receivingHandler;
+
+            WritePackage(package);
             responseReceived.WaitOne();
+
+            PackageReceived -= receivingHandler;
 
             if (response.Length != expectedPackageLength)
                 Logger.Warning($"Paketlänge beträgt {response.Length}, aber {expectedPackageLength} erwartet.");
