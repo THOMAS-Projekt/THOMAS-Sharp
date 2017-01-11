@@ -20,8 +20,9 @@ namespace THOMASServer.Controllers
         public SLAMController(LidarActor lidarActor)
         {
             _lidarActor = lidarActor;
+            lidarActor.StartScan(1);
 
-            lidarActor.SaveScansToFile("scans.csv", 1, 10);
+            //lidarActor.SaveScansToFile("scans.csv", 1, 10);
         }
 
         public void Start()

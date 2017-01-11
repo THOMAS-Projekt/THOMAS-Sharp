@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fleck;
 using THOMASServer.Attributes;
 using THOMASServer.Drivers;
 
@@ -19,9 +20,26 @@ namespace THOMASServer.Actors
 
         private readonly ArduinoLidarDriver _arduinoLidarDriver;
 
+        private readonly WebSocketServer _webSocketServer;
+        private readonly List<IWebSocketConnection> _connections;
+
         public LidarActor(ArduinoLidarDriver arduinoLidarDriver)
         {
             _arduinoLidarDriver = arduinoLidarDriver;
+
+            _webSocketServer = new WebSocketServer("ws://0.0.0.0:8123");
+            _webSocketServer.Start(socket =>
+            {
+                socket.OnOpen = () => _connections.Add(socket);
+                socket.OnClose = () => _connections.Remove(socket);
+            });
+
+            _arduinoLidarDriver.ScanValueReceived += (sender, e) =>
+            {
+                string message = $"{e.Angle}:{e.Distance}\n";
+                foreach (IWebSocketConnection connection in _connections)
+                    connection.Send(message);
+            };
         }
 
         public bool StartScan(int roundsPerSecond)
@@ -66,7 +84,7 @@ namespace THOMASServer.Actors
                 Logger.Error($"Die Datei {filename} konnte nicht zum Schreiben geöffnet werden: {ex.Message}");
                 return;
             }
-            
+
             int remainingScans = numberOfScans;
             float lastAngle = -1;
 
