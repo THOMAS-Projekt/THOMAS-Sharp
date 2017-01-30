@@ -35,7 +35,7 @@ namespace THOMASServer.Actors
 
             _arduinoLidarDriver.ScanValueReceived += (sender, e) =>
             {
-                string message = $"{e.Angle}:{e.Distance}\n";
+                string message = $"{e.Angle};{e.Distance}";
                 foreach (IWebSocketConnection connection in _connections)
                     connection.Send(message);
             };
