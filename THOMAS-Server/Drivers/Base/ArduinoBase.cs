@@ -30,6 +30,8 @@ namespace THOMASServer.Drivers.Base
                     _serialPort.Open();
                     _serialPort.DiscardInBuffer();
 
+                    WaitForHandshake();
+
                     byte? receivedArduinoId = ReadPackage(1)?[0];
                     if (receivedArduinoId == arduinoId)
                     {
@@ -112,6 +114,11 @@ namespace THOMASServer.Drivers.Base
                 Logger.Warning($"Paketlänge beträgt {response.Length}, aber {expectedPackageLength} erwartet.");
 
             return response;
+        }
+
+        private void WaitForHandshake()
+        {
+            while (_serialPort.ReadByte() != 255) {}
         }
 
         private byte[] ReadPackage()
